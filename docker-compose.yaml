@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  flaskserver:
+    build: .
+    image: "ns-flask-server"
+    ports:
+    - '39090:5000'
+    volumes:
+    - ./:/usr/flaskserver
