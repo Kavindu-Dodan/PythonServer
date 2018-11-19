@@ -9,8 +9,16 @@ app.logger.setLevel('INFO')
 DUMMY_HANDLER = DummyAPI()
 
 
-@app.route('/bookings/bookings', methods=['GET', 'POST'])
+@app.route('/bookings', methods=['OPTIONS', 'GET', 'POST'])
 def dummy_api():
+    if request.method == "OPTIONS":
+        options_response = flask.Response()
+        options_response.headers["Access-Control-Allow-Origin"] = "*"
+        options_response.headers["X-Content-Type-Options"] = "nosniff"
+        options_response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type"
+        options_response.headers["Access-Control-Allow-Methods"] = "OPTIONS, POST, HEAD, GET"
+        return options_response
+
     if request.method == 'GET':
         resp_val = DUMMY_HANDLER.handle_get()
     else:
@@ -18,6 +26,7 @@ def dummy_api():
 
     response = flask.Response(resp_val)
     response.headers["Content-Type"] = "application/json"
+    response.headers["Access-Control-Allow-Origin"] = "*"
 
     return response
 
